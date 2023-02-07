@@ -1,38 +1,28 @@
-import React from "react";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/authContext";
 
 const Chats = () => {
-    return (
-        <div className="chats">
-            <div className="userChat">
-                <img src="https://www.researchgate.net/publication/224624453/figure/fig1/AS:393833717223438@1470908683517/Original-colour-bar-static-test-image-used-in-analogue-television-II-METHODOLOGY.png" alt="" />
-                <div className="userChatInfo">
-                    <span>Kane</span>
-                    <p>Hello</p>
-                </div>
-            </div>
-            <div className="userChat">
-                <img src="https://www.researchgate.net/publication/224624453/figure/fig1/AS:393833717223438@1470908683517/Original-colour-bar-static-test-image-used-in-analogue-television-II-METHODOLOGY.png" alt="" />
-                <div className="userChatInfo">
-                    <span>Kane</span>
-                    <p>Hello</p>
-                </div>
-            </div>
-            <div className="userChat">
-                <img src="https://www.researchgate.net/publication/224624453/figure/fig1/AS:393833717223438@1470908683517/Original-colour-bar-static-test-image-used-in-analogue-television-II-METHODOLOGY.png" alt="" />
-                <div className="userChatInfo">
-                    <span>Kane</span>
-                    <p>Hello</p>
-                </div>
-            </div>
-            <div className="userChat">
-                <img src="https://www.researchgate.net/publication/224624453/figure/fig1/AS:393833717223438@1470908683517/Original-colour-bar-static-test-image-used-in-analogue-television-II-METHODOLOGY.png" alt="" />
-                <div className="userChatInfo">
-                    <span>Kane</span>
-                    <p>Hello</p>
-                </div>
-            </div>
-        </div>
-    )
-}
+  const [chats, setChats] = useState([]);
+  const { currentUser } = useContext(AuthContext);
+  useEffect(() => {
+    if (!currentUser.uid) return;
+    const db = getFirestore();
+    const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+      setChats(doc.data());
+    });
+    return () => {
+      unsub();
+    };
+  }, [currentUser.uid]);
+  return (
+    <div className="chats">
+      {console.log(chats) &&
+        chats.map((chat) => {
+          return;
+        })}
+    </div>
+  );
+};
 
-export default Chats
+export default Chats;
