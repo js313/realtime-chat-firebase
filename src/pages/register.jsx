@@ -42,7 +42,6 @@ const Register = () => {
           setError(true);
         },
         () => {
-          console.log(response);
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             await updateProfile(response.user, {
               displayName,
