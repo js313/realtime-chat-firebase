@@ -1,1 +1,2 @@
+BUG:-
 Prevent user from sending blank messages(add firebase rule as well)

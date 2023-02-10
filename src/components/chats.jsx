@@ -29,6 +29,7 @@ const Chats = () => {
     dispatch({ type: "CHANGE_USER", payload: user });
     displayDispatch({ type: "TOGGLE_SIDEBAR" });
   };
+  console.log(chats);
 
   return (
     <div className="chats">
