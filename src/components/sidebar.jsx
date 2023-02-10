@@ -9,7 +9,9 @@ const Sidebar = () => {
   return (
     <div
       className="sidebar"
-      style={{ display: data.sidebar ? "block" : "none" }}
+      style={{
+        flex: data.sidebar,
+      }}
     >
       <Navbar />
       <Search />

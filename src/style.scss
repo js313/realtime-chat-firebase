@@ -102,10 +102,13 @@
             flex: 1;
             border-right: 1px solid #3e3c61;
             background-color: #3e3c61;
+            overflow: hidden;
 
             @include for-phone {
-                flex: 10;
-                display: none;
+                transition-property: flex;
+                transition-duration: 0.5s;
+                transition-delay: 0s;
+                transition-timing-function: linear;
             }
 
             .navbar {
