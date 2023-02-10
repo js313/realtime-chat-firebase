@@ -19,7 +19,15 @@ const Messages = () => {
   }, [currentUser.uid, data.chatId]);
 
   return (
-    <div className="messages">
+    <div
+      className="messages"
+      style={{
+        height:
+          !data.chatId && Object.keys(data.user).length <= 0
+            ? "100%"
+            : "calc(100% - 160px)",
+      }}
+    >
       {messages &&
         messages.map((message) => {
           return <Message message={message} key={message.id} />;

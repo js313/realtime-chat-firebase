@@ -29,6 +29,12 @@ const Input = () => {
   const handleSend = async () => {
     const db = getFirestore();
     setError(false);
+    const text = message.trim();
+    if (
+      (!text && !image) ||
+      (!data.chatId && Object.keys(data.user).length === 0)
+    )
+      return;
     try {
       if (image) {
         const storage = getStorage();
@@ -45,7 +51,7 @@ const Input = () => {
                 await updateDoc(doc(db, "chats", data.chatId), {
                   messages: arrayUnion({
                     id: uuidv4(),
-                    text: message,
+                    text,
                     senderId: currentUser.uid,
                     date: Timestamp.now(),
                     image: downloadURL,
@@ -59,7 +65,7 @@ const Input = () => {
         await updateDoc(doc(db, "chats", data.chatId), {
           messages: arrayUnion({
             id: uuidv4(),
-            text: message,
+            text,
             senderId: currentUser.uid,
             date: Timestamp.now(),
           }),
@@ -68,13 +74,13 @@ const Input = () => {
       await updateDoc(doc(db, "userChats", data.user.uid), {
         [data.chatId + ".date"]: serverTimestamp(),
         [data.chatId + ".lastMessage"]: {
-          message,
+          text,
         },
       });
       await updateDoc(doc(db, "userChats", currentUser.uid), {
         [data.chatId + ".date"]: serverTimestamp(),
         [data.chatId + ".lastMessage"]: {
-          message,
+          text,
         },
       });
       setMessage("");
@@ -86,7 +92,13 @@ const Input = () => {
   };
 
   return (
-    <div className="input">
+    <div
+      className="input"
+      style={{
+        display:
+          data.chatId && Object.keys(data.user).length > 0 ? "flex" : "none",
+      }}
+    >
       {error && <span style={{ color: "red" }}>Something went wrong!</span>}
       <input
         type="text"

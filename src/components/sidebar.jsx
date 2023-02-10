@@ -3,9 +3,10 @@ import { DisplayContext } from "../context/displayContext";
 import Chats from "./chats";
 import Navbar from "./navbar";
 import Search from "./search";
+import Close from "../img/close.png";
 
 const Sidebar = () => {
-  const { data } = useContext(DisplayContext);
+  const { data, dispatch } = useContext(DisplayContext);
   return (
     <div
       className="sidebar"
@@ -16,6 +17,14 @@ const Sidebar = () => {
       <Navbar />
       <Search />
       <Chats />
+      {window.innerWidth < 600 && (
+        <img
+          id="close"
+          src={Close}
+          alt=""
+          onClick={() => dispatch({ type: "TOGGLE_SIDEBAR" })}
+        />
+      )}
     </div>
   );
 };

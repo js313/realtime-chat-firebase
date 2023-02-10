@@ -14,6 +14,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { AuthContext } from "../context/authContext";
+import { DisplayContext } from "../context/displayContext";
+import { ChatContext } from "../context/chatContext";
 
 const Search = () => {
   const [userName, setUserName] = useState("");
@@ -21,6 +23,8 @@ const Search = () => {
   const [err, setErr] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
+  const { dispatch: chatDispatch } = useContext(ChatContext);
+  const { dispatch } = useContext(DisplayContext);
 
   const searchUser = async () => {
     try {
@@ -61,7 +65,6 @@ const Search = () => {
             ? currentUser.uid + user.uid
             : user.uid + currentUser.uid; //condition to make it searchable from both ends
         const res = await getDoc(doc(db, "chats", combinedId));
-        console.log(user, currentUser);
 
         if (!res.exists()) {
           await setDoc(doc(db, "chats", combinedId), { messages: [] });
@@ -83,6 +86,8 @@ const Search = () => {
             [combinedId + ".date"]: serverTimestamp(),
           });
         }
+        chatDispatch({ type: "CHANGE_USER", payload: user });
+        dispatch({ type: "TOGGLE_SIDEBAR" });
       } catch (err) {
         console.log(err);
         setErr(true);

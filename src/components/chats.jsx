@@ -2,11 +2,13 @@ import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import { ChatContext } from "../context/chatContext";
+import { DisplayContext } from "../context/displayContext";
 
 const Chats = () => {
   const [chats, setChats] = useState([]);
   const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
+  const { dispatch: displayDispatch } = useContext(DisplayContext);
 
   useEffect(() => {
     if (!currentUser.uid) return;
@@ -14,7 +16,6 @@ const Chats = () => {
     const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
       setChats(
         Object.entries(doc.data()).sort((c1, c2) => {
-          console.log(c1, c2);
           return c2[1].date - c1[1].date;
         })
       );
@@ -26,6 +27,7 @@ const Chats = () => {
 
   const handleSelect = (user) => {
     dispatch({ type: "CHANGE_USER", payload: user });
+    displayDispatch({ type: "TOGGLE_SIDEBAR" });
   };
 
   return (

@@ -4,13 +4,14 @@ export const DisplayContext = createContext();
 export const DisplayContextProvider = ({ children }) => {
   const INITIAL_STATE = {
     sidebar: window.innerWidth < 600 ? 0 : 1,
+    input: false,
   };
 
   const displayReducer = (state, action) => {
     if (action.type === "TOGGLE_SIDEBAR") {
       return {
         ...state,
-        sidebar: state.sidebar === 0 ? 10 : window.innerWidth < 600 ? 0 : 1,
+        sidebar: state.sidebar === 0 ? 22 : window.innerWidth < 600 ? 0 : 1,
       };
     }
   };
